@@ -6,7 +6,7 @@ graphics.off()  # Turn off all graphics devices
 cat('\f')  # Clear the console
 
 # Set the working directory
-setwd("C:/Users/pmnha/Downloads/Bootcamp")  # Set the working directory
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))  # Set the working directory to the script's location
 getwd()  # Get the current working directory
 
 # Git reminder
