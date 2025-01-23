@@ -6,7 +6,7 @@ graphics.off()  # Turn off all graphics devices
 cat('\f')  # Clear the console
 
 # Set the working directory
-setwd("C:/Users/pmnha/Downloads/Bootcamp")  # Set the working directory
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))  # Set the working directory to the script's location
 getwd()  # Get the current working directory
 
 # Git reminder
@@ -122,13 +122,12 @@ model_2_1 <- feols(l_gdp_pcap ~ Year, data = us_data)  # Run regression model
 model_2_2 <- feols(l_gdp_pcap ~ Year + lag(l_gdp_pcap, 1), data = us_data)  # Run regression model with lagged variable
 
 # 2.3 Regression: diff(l_gdp_pcap, differences = 1) ~ Year + lag(l_gdp_pcap, 1)
-us_data <- us_data %>%
+model_2_3 <- us_data %>%
   mutate(
     diff_l_gdp_pcap = c(NA, diff(l_gdp_pcap, differences = 1)),  # Create differenced variable
     lag_l_gdp_pcap = lag(l_gdp_pcap, 1)  # Create lagged variable
-  )
-
-model_2_3 <- feols(diff_l_gdp_pcap ~ Year + lag_l_gdp_pcap, data = us_data)  # Run regression model with differenced variable
+  ) %>%
+  feols(diff_l_gdp_pcap ~ Year + lag_l_gdp_pcap, data = .)  # Run regression model with differenced variable
 
 # 2.4 Combine all tables into a huxreg
 combined_models <- huxreg(
@@ -186,3 +185,20 @@ if (stationarity_result == "Stationary") {
 } else {
   cat("The series is not stationary because the test statistic is not less than the 5% critical value.\n")  # Print result
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
